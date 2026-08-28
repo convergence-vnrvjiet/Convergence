@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
+import { Black_Ops_One, Geist, Geist_Mono, Inter } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -13,6 +13,12 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
+const blackOpsOne = Black_Ops_One({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-display",
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,8 +28,23 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable, geistMonoHeading.variable)}
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        "font-sans",
+        inter.variable,
+        geistMonoHeading.variable,
+        blackOpsOne.variable
+      )}
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Geist+Pixel&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
