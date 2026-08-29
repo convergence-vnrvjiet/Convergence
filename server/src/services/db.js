@@ -6,40 +6,12 @@ const { Pool } = pkg;
 
 const DB_MODE = process.env.DB_MODE || 'memory';
 
-// In-Memory store seeded with initial mock data
+// In-Memory store
 const inMemoryDb = {
   users: [],
-  events: [
-    {
-      eventId: 'ev_101',
-      name: 'Coding Contest',
-      description: 'Put your skills to test with our algorithmic challenges.',
-      category: 'Technical',
-      venue: 'E001',
-      prize_pool: 5000,
-      registration_deadline: '2026-08-28T13:30:00Z',
-      start_time: '2026-08-28T14:30:00Z',
-      end_time: '2026-08-28T16:30:00Z',
-      contact: ['+91 9100000000', '+91 9200000000'],
-      participantLimit: 100,
-      registered: false
-    },
-    {
-      eventId: 'ev_102',
-      name: 'Robo Wars',
-      description: 'Battle of custom-built combat robots.',
-      category: 'Technical',
-      venue: 'Open Auditorium',
-      prize_pool: 15000,
-      registration_deadline: '2026-08-28T12:00:00Z',
-      start_time: '2026-08-28T15:00:00Z',
-      end_time: '2026-08-28T18:00:00Z',
-      contact: ['+91 9300000000'],
-      participantLimit: 30,
-      registered: false
-    }
-  ],
-  registrations: []
+  events: [],
+  registrations: [],
+  payments: []
 };
 
 let pool;
@@ -111,4 +83,59 @@ export const createUser = async (userData) => {
   const values = [`usr_${Date.now()}`, userData.name, userData.email, userData.phone, userData.institution, userData.password];
   const res = await pool.query(query, values);
   return res.rows[0];
+};
+
+export const insertPayment = async (paymentData) => {
+  if (DB_MODE === 'memory') {
+    const payment = {
+      id: `pay_${Date.now()}`,
+      ...paymentData,
+      createdAt: new Date().toISOString(),
+    };
+    inMemoryDb.payments.push(payment);
+    return payment;
+  }
+
+  const query = `
+    INSERT INTO payments (user_id, pass_type, amount, currency, razorpay_order_id, razorpay_payment_id, razorpay_signature, status, paid_at)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING *
+  `;
+  const values = [
+    paymentData.userId,
+    paymentData.passType,
+    paymentData.amount,
+    paymentData.currency,
+    paymentData.razorpayOrderId,
+    paymentData.razorpayPaymentId,
+    paymentData.razorpaySignature,
+    paymentData.status,
+    paymentData.paidAt,
+  ];
+  const res = await pool.query(query, values);
+  return res.rows[0];
+};
+
+export const getPaymentByOrderId = async (orderId) => {
+  if (DB_MODE === 'memory') {
+    return inMemoryDb.payments.find(p => p.razorpayOrderId === orderId) || null;
+  }
+
+  const query = `SELECT * FROM payments WHERE razorpay_order_id = $1`;
+  const res = await pool.query(query, [orderId]);
+  return res.rows[0] || null;
+};
+
+export const updateUserPassStatus = async (userId, status) => {
+  if (DB_MODE === 'memory') {
+    const user = inMemoryDb.users.find(u => u.id === userId);
+    if (user) {
+      user.passStatus = status;
+    }
+    return user || null;
+  }
+
+  const query = `UPDATE users SET pass_status = $1 WHERE user_id = $2 RETURNING *`;
+  const res = await pool.query(query, [status, userId]);
+  return res.rows[0] || null;
 };
