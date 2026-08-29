@@ -1,13 +1,6 @@
 import { Hero } from "@/components/hero"
-
-const NAV_ITEMS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Events", href: "#events" },
-  { label: "Themes", href: "#themes" },
-  { label: "Organised By", href: "#clubs" },
-  { label: "Contact", href: "#contact" },
-]
+import { Logos } from "@/components/logos"
+import { SiteHeader } from "@/components/site-header"
 
 const EVENT_CATEGORIES = ["Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
 
@@ -48,40 +41,10 @@ function ContactCard({ name, role, phone }: { name: string; role: string; phone:
 export default function Page() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-10 border-b border-border bg-background">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 border border-border" />
-            <span className="text-sm font-semibold tracking-wide">CONVERGENCE 2K26</span>
-          </div>
-          <nav className="hidden gap-6 text-sm text-muted-foreground md:flex">
-            {NAV_ITEMS.map((item) => (
-              <a key={item.href} href={item.href}>
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
         <Hero />
-
-        <section id="about" className="border-b border-border">
-          <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center">
-            <div>
-              <h2 className="mb-6 text-3xl font-bold">About</h2>
-              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-                <p>[Paragraph placeholder — event history and background copy goes here.]</p>
-                <p>[Paragraph placeholder — describes this year's edition and format.]</p>
-                <p>[Paragraph placeholder — legacy details, dates, and highlights.]</p>
-              </div>
-            </div>
-            <div className="flex aspect-square items-center justify-center border border-border text-sm text-muted-foreground">
-              Globe Visual Placeholder
-            </div>
-          </div>
-        </section>
 
         <section id="events" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-20">
@@ -144,16 +107,7 @@ export default function Page() {
             <p className="mx-auto mb-10 max-w-xl text-sm text-muted-foreground">
               [Placeholder — brought to you by student clubs and technical societies working together.]
             </p>
-            <div className="grid grid-cols-4 gap-4 sm:grid-cols-6 md:grid-cols-8">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex aspect-square items-center justify-center border border-border text-[10px] text-muted-foreground"
-                >
-                  Logo
-                </div>
-              ))}
-            </div>
+            <Logos />
           </div>
         </section>
 
