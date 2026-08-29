@@ -17,8 +17,8 @@ function TitleRow() {
     <div className="flex justify-center py-6 sm:py-10">
       <div className="w-full">
         <div className="flex justify-center">
-          <div className="relative flex flex-col items-center sm:block">
-            <h1 className="flex items-center gap-1 font-hero-title text-[clamp(2rem,9vw,5.5rem)] leading-none tracking-tight text-black uppercase sm:gap-2">
+          <div className="relative flex flex-col items-center md:block">
+            <h1 className="flex items-center gap-1 font-hero-title text-[clamp(1.35rem,8.5vw,5.5rem)] leading-none tracking-tight text-black uppercase sm:gap-2">
               <span>C</span>
 
               <span className="relative -mx-0.5 inline-block h-[0.8em] w-[0.8em] sm:-mx-1">
@@ -35,7 +35,7 @@ function TitleRow() {
             </h1>
 
             <span
-              className="mt-3 bg-red-700 px-2.5 py-1 font-hero-title text-base tracking-wide sm:absolute sm:top-full sm:right-0 sm:mt-4 sm:px-3 sm:py-1.5 sm:text-xl"
+              className="mt-3 bg-red-700 px-2.5 py-1 font-hero-title text-base tracking-wide sm:px-3 sm:py-1.5 sm:text-xl md:absolute md:top-full md:right-0 md:mt-4"
               style={{ color: PAPER }}
             >
               2K26
