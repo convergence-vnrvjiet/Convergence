@@ -22,7 +22,7 @@ function MobileNav({
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex h-8 w-8 items-center justify-center text-foreground"
+        className="flex h-8 w-8 items-center justify-center text-[#ede1c5]"
       >
         {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
@@ -34,7 +34,7 @@ function MobileNav({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute inset-x-0 top-full flex flex-col border-b border-border bg-background font-tagline text-base font-medium! tracking-[0.2em] lowercase"
+            className="absolute inset-x-0 top-full flex flex-col border-b border-black/20 bg-red-700 font-tagline text-base font-black! tracking-[0.2em] text-[#ede1c5] lowercase"
           >
             {items.map((item) => {
               const isActive = activeHref === item.href
@@ -45,12 +45,12 @@ function MobileNav({
                   onClick={() => setOpen(false)}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "flex items-center gap-3 border-b border-border px-6 py-4 last:border-b-0",
-                    isActive ? "text-primary" : "text-muted-foreground"
+                    "flex items-center gap-3 border-b border-black/20 px-6 py-4 transition-opacity last:border-b-0",
+                    isActive ? "opacity-100" : "opacity-70"
                   )}
                 >
                   <span
-                    className={cn("h-1.5 w-1.5 shrink-0", isActive ? "bg-primary" : "bg-muted-foreground/40")}
+                    className={cn("h-1.5 w-1.5 shrink-0 bg-[#ede1c5]", isActive ? "opacity-100" : "opacity-40")}
                   />
                   {item.label}
                 </a>

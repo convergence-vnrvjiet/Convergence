@@ -1,4 +1,5 @@
 import { Hero } from "@/components/hero"
+import { Logos } from "@/components/logos"
 import { SiteHeader } from "@/components/site-header"
 
 const EVENT_CATEGORIES = ["Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
@@ -106,16 +107,7 @@ export default function Page() {
             <p className="mx-auto mb-10 max-w-xl text-sm text-muted-foreground">
               [Placeholder — brought to you by student clubs and technical societies working together.]
             </p>
-            <div className="grid grid-cols-4 gap-4 sm:grid-cols-6 md:grid-cols-8">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex aspect-square items-center justify-center border border-border text-[10px] text-muted-foreground"
-                >
-                  Logo
-                </div>
-              ))}
-            </div>
+            <Logos />
           </div>
         </section>
 
