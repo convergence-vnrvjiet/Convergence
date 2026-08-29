@@ -1,6 +1,20 @@
+"use client"
+
+import { useEffect, useState } from "react"
+// Adjust the import path if your apis folder is located differently relative to page.tsx
+import { eventsApi } from "@/apis/events" 
+
 import { Hero } from "@/components/hero"
 import { Logos } from "@/components/logos"
 import { SiteHeader } from "@/components/site-header"
+
+interface EventData {
+  eventId: string;
+  name: string;
+  description: string;
+  category: string;
+  registered: boolean;
+}
 
 const EVENT_CATEGORIES = ["Technical", "Workshops", "Gaming", "Cultural", "Sports", "Hackathon"]
 
@@ -39,6 +53,24 @@ function ContactCard({ name, role, phone }: { name: string; role: string; phone:
 }
 
 export default function Page() {
+  const [events, setEvents] = useState<EventData[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await eventsApi.getEvents()
+        setEvents(response.events || [])
+      } catch (error) {
+        console.error("API Error (Events):", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
@@ -69,13 +101,36 @@ export default function Page() {
                   Selected Category Events
                 </p>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="space-y-2 border border-border p-4">
-                      <div className="h-3 w-2/3 bg-muted" />
-                      <div className="h-2 w-full bg-muted" />
-                      <div className="h-2 w-1/2 bg-muted" />
-                    </div>
-                  ))}
+                  {isLoading ? (
+                    /* Keep existing skeleton for loading state */
+                    Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="space-y-2 border border-border p-4">
+                        <div className="h-3 w-2/3 bg-muted" />
+                        <div className="h-2 w-full bg-muted" />
+                        <div className="h-2 w-1/2 bg-muted" />
+                      </div>
+                    ))
+                  ) : events.length > 0 ? (
+                    /* Map actual events */
+                    events.map((event) => (
+                      <div key={event.eventId} className="flex flex-col space-y-2 border border-border p-4">
+                        <h3 className="font-bold text-lg">{event.name}</h3>
+                        <p className="text-sm text-muted-foreground line-clamp-2">{event.description}</p>
+                        <div className="mt-auto flex items-center justify-between pt-4">
+                          <span className="text-xs uppercase tracking-widest text-muted-foreground border border-border px-2 py-1">
+                            {event.category}
+                          </span>
+                          {event.registered && (
+                            <span className="text-xs font-semibold uppercase text-green-500">
+                              Registered
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-muted-foreground col-span-2">No events found.</p>
+                  )}
                 </div>
               </div>
             </div>

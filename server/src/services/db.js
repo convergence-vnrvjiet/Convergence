@@ -9,7 +9,36 @@ const DB_MODE = process.env.DB_MODE || 'memory';
 // In-Memory store
 const inMemoryDb = {
   users: [],
-  events: [],
+  events: [
+    {
+      eventId: 'ev_101',
+      name: 'Coding Contest',
+      description: 'Put your skills to test with our algorithmic challenges.',
+      category: 'Technical',
+      venue: 'E001',
+      prize_pool: 5000,
+      registration_deadline: '2026-08-28T13:30:00Z',
+      start_time: '2026-08-28T14:30:00Z',
+      end_time: '2026-08-28T16:30:00Z',
+      contact: ['+91 9100000000', '+91 9200000000'],
+      participantLimit: 100,
+      registered: false
+    },
+    {
+      eventId: 'ev_102',
+      name: 'Robo Wars',
+      description: 'Battle of custom-built combat robots.',
+      category: 'Technical',
+      venue: 'Open Auditorium',
+      prize_pool: 15000,
+      registration_deadline: '2026-08-28T12:00:00Z',
+      start_time: '2026-08-28T15:00:00Z',
+      end_time: '2026-08-28T18:00:00Z',
+      contact: ['+91 9300000000'],
+      participantLimit: 30,
+      registered: false
+    }
+  ],
   registrations: [],
   payments: []
 };
@@ -71,16 +100,31 @@ export const findUserByEmail = async (email) => {
 
 export const createUser = async (userData) => {
   if (DB_MODE === 'memory') {
-    const newUser = { id: `usr_${Date.now()}`, ...userData, role: 'attendee', passStatus: 'inactive' };
+    const newUser = { 
+      id: `usr_${Date.now()}`, 
+      ...userData, 
+      role: 'attendee', 
+      passStatus: 'inactive' 
+    };
     inMemoryDb.users.push(newUser);
     return newUser;
   }
   
   const query = `
-    INSERT INTO users (user_id, name, email, phone, institution, password, role, pass_status)
-    VALUES ($1, $2, $3, $4, $5, $6, 'Student', 'Inactive') RETURNING *
+    INSERT INTO users (user_id, name, email, phone, institution, roll_number, year, branch, password, role, pass_status)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'Student', 'Inactive') RETURNING *
   `;
-  const values = [`usr_${Date.now()}`, userData.name, userData.email, userData.phone, userData.institution, userData.password];
+  const values = [
+    `usr_${Date.now()}`, 
+    userData.name, 
+    userData.email, 
+    userData.phone, 
+    userData.college, // Mapped to institution[cite: 1]
+    userData.rollNumber,
+    userData.year,
+    userData.branch,
+    userData.password
+  ];
   const res = await pool.query(query, values);
   return res.rows[0];
 };
