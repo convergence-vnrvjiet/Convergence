@@ -361,15 +361,6 @@ export function Hero() {
           fill
           priority
           className="object-contain object-top opacity-90 select-none"
-          style={{ filter: "grayscale(0.6) contrast(1.25)" }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 mix-blend-multiply"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(0,0,0,0.9) 45%, transparent 46%)",
-            backgroundSize: "4px 4px",
-          }}
         />
       </div>
     </section>
