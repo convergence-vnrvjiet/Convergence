@@ -17,7 +17,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/20 bg-red-700">
-      <div className="relative flex h-20 items-center justify-between px-3 sm:px-4">
+      <div className="relative mx-auto flex h-20 w-full max-w-[1332px] items-center justify-between">
         <a href="#home" className="flex items-center">
           <span
             className="h-8 w-8 shrink-0 bg-[#ede1c5]"
